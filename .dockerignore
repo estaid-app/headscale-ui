@@ -1,0 +1,12 @@
+.git
+.github
+.idea
+node_modules
+documentation
+docker
+*.md
+.gitignore
+.npmrc
+.prettierignore
+.prettierrc
+

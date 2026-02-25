@@ -40,7 +40,7 @@
 			});
 
 		await headscaleUsersResponse.json().then((data) => {
-			headscaleUsers = data.users;
+			headscaleUsers = data.users || data.namespaces;
 			// sort the users
 			headscaleUsers = sortUsers(headscaleUsers);
 		});
@@ -283,7 +283,7 @@
 			});
 
 		await headscaleDeviceResponse.json().then((data) => {
-			headscaleDevices = data[`nodes`];
+			headscaleDevices = data.nodes || data.machines;
 			headscaleDevices = sortDevices(headscaleDevices);
 		});
 		// set the stores

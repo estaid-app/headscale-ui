@@ -53,7 +53,8 @@ jobs:
           build-args: |
             BUILD_DATE=${{ env.BUILD_DATE }}
             VERSION=${{ env.VERSION }}
-          context: ./docker/production
+          context: .
+          file: ./docker/production/dockerfile
           tags: |
             ${{ env.TAGS }}
           platforms: linux/amd64,linux/arm/v7,linux/arm64/v8

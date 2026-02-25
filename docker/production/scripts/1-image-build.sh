@@ -1,14 +1,8 @@
 #!/bin/sh
 set -x
 
-# add dependencies
-# git for cloning the repository
-apk add --no-cache git
-
-#clone the project
-git clone ${PROJECT_URL} ${PROJECT_NAME}
-cd ${PROJECT_NAME}
-git checkout ${CHECKOUT_BRANCH}
+# source is already copied into /staging/${PROJECT_NAME} via the Dockerfile
+cd /staging/${PROJECT_NAME}
 
 # install the project
 npm install

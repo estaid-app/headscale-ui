@@ -2,26 +2,27 @@ FROM node:lts AS build
 
 # arguments
 ARG VERSION="master"
-# Branch to check out
-ARG CHECKOUT_BRANCH="master"
 
 #environment variables
 ENV PROJECT_NAME="headscale-ui"
-# URL for the github/git location
-ENV PROJECT_URL="https://github.com/gurucomputing/headscale-ui"
 
 # Set the staging environment
 WORKDIR /staging/scripts
 WORKDIR /staging
 RUN chown 1000:1000 /staging
 
-# Copy across the scripts folder
-COPY scripts/* ./scripts/
+# Copy across the build scripts
+COPY docker/production/scripts/* ./scripts/
 
-# Set permissions for all scripts. We do not want normal users to have write
-# access to the scripts
+# Set permissions for all scripts
 RUN chown -R 0:0 scripts
 RUN chmod -R 755 scripts
+
+# Copy source from build context (repo root)
+RUN mkdir -p /staging/${PROJECT_NAME}
+COPY src/ ./${PROJECT_NAME}/src/
+COPY static/ ./${PROJECT_NAME}/static/
+COPY package.json package-lock.json svelte.config.js vite.config.js jsconfig.json postcss.config.cjs tailwind.config.cjs ./${PROJECT_NAME}/
 
 # Build the image. This build runs as root
 RUN /staging/scripts/1-image-build.sh
@@ -34,9 +35,6 @@ FROM alpine:latest
 
 #environment variables
 ENV PROJECT_NAME="headscale-ui"
-# URL for the github/git location
-ENV PROJECT_URL="https://github.com/gurucomputing/headscale-ui"
-# Ports that caddy will run on
 ENV HTTP_PORT="8080"
 ENV HTTPS_PORT="8443"
 
@@ -50,9 +48,9 @@ WORKDIR /staging/scripts
 WORKDIR /staging
 
 # Copy across the scripts folder
-COPY scripts/* ./scripts/
-# Copy default caddy config from project root
-COPY ./Caddyfile /staging/Caddyfile
+COPY docker/production/scripts/* ./scripts/
+# Copy default caddy config
+COPY docker/production/Caddyfile /staging/Caddyfile
 COPY --from=build /staging/${PROJECT_NAME}/build /web
 
 RUN apk add --no-cache caddy
@@ -60,15 +58,12 @@ RUN apk add --no-cache caddy
 # Create a group and user
 RUN addgroup -S appgroup && adduser -D appuser -G appgroup
 
-# Set permissions for all scripts. We do not want normal users to have write
-# access to the scripts
 RUN chown -R 0:0 scripts
 RUN chmod -R 755 scripts
 
 RUN chown -R appuser:appgroup /web
 RUN chown -R appuser:appgroup /data
 
-# Tell docker that all future commands should run as the appuser user
 USER appuser
 
 WORKDIR /data
