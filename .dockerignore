@@ -3,7 +3,7 @@
 .idea
 node_modules
 documentation
-docker
+docker/development
 *.md
 .gitignore
 .npmrc

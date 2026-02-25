@@ -68,4 +68,4 @@ USER appuser
 
 WORKDIR /data
 
-ENTRYPOINT /bin/sh /staging/scripts/2-initialise.sh
+ENTRYPOINT ["/bin/sh", "/staging/scripts/2-initialise.sh"]
