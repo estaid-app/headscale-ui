@@ -4,6 +4,9 @@ export class Device {
 	public givenName: string = '';
 	public lastSeen: string = '';
 	public ipAddresses: string[] = [];
+	// v0.28+: unified tags field (replaces forcedTags/validTags/invalidTags)
+	public tags: string[] = [];
+	// legacy fields — kept so old API responses don't crash
 	public forcedTags: string[] = [];
 	public validTags: string[] = [];
 	public invalidTags: string[] = [];

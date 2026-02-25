@@ -9,7 +9,7 @@
 	export let device = new Device();
 
 	function updateTagsAction() {
-		let tagList = device.forcedTags;
+		let tagList = device.tags.length > 0 ? device.tags : device.forcedTags;
 		tagList.push(`tag:${newTag}`);
 		// remove duplicates
 		tagList = [...new Set(tagList)];

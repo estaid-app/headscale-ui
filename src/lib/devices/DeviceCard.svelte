@@ -117,7 +117,7 @@
 							<th>IP Addresses</th>
 							<td>
 								<ul class="list-disc list-inside">
-									{#each device.ipAddresses as address}
+									{#each (device.ipAddresses || []) as address}
 										<li>{address}</li>
 									{/each}
 								</ul>
