@@ -40,7 +40,8 @@
 			});
 
 		await headscaleUsersResponse.json().then((data) => {
-			headscaleUsers = data.users || data.namespaces;
+			const rawUsers: any[] = data.users || data.namespaces || [];
+			headscaleUsers = rawUsers.map((u) => new User(u));
 			// sort the users
 			headscaleUsers = sortUsers(headscaleUsers);
 		});
@@ -283,7 +284,11 @@
 			});
 
 		await headscaleDeviceResponse.json().then((data) => {
-			headscaleDevices = data.nodes || data.machines;
+			// Support v0.28+ (nodes) and legacy (machines) response keys.
+			// Map through new Device() so class array defaults are applied for any
+			// fields the API omits — preventing undefined iteration errors in templates.
+			const rawNodes: any[] = data.nodes || data.machines || [];
+			headscaleDevices = rawNodes.map((node) => new Device(node));
 			headscaleDevices = sortDevices(headscaleDevices);
 		});
 		// set the stores

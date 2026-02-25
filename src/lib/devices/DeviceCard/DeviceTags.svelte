@@ -6,7 +6,7 @@
 	export let device = new Device();
 
 	function updateTagsAction(tag: String) {
-		let tagList = device.tags.length > 0 ? device.tags : device.forcedTags;
+		let tagList = device.tags?.length > 0 ? device.tags : device.forcedTags;
 		// remove tag we're trying to remove
 		tagList = tagList.filter(element => element !== tag); 
 
@@ -23,7 +23,7 @@
 <div class="flex gap-1">
 	<span><NewDeviceTag {device}/></span>
 
-	{#each (device.tags.length > 0 ? device.tags : device.forcedTags) as tag}
+	{#each (device.tags?.length > 0 ? device.tags : device.forcedTags) as tag}
 		<span class="btn btn-xs btn-primary normal-case">{tag.replace("tag:","")}
 		<!-- Cancel symbol -->
 		<button on:click|stopPropagation={() => {updateTagsAction(tag)}}
