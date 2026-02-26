@@ -1,6 +1,6 @@
 {
 	"name": "headscale-ui",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"scripts": {
 		"dev": "vite dev --port 8080 --host 0.0.0.0",
 		"build": "vite build",
